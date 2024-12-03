@@ -3,9 +3,15 @@ import { io } from 'socket.io-client';
 export const initSocket = async () => {
     const options = {
         'force new connection': true,
-        reconnectionAttempt: 'Infinity',
+        reconnectionAttempts: Infinity,
         timeout: 10000,
         transports: ['websocket'],
     };
-    return io(process.env.REACT_APP_BACKEND_URL, options);
+
+    const backendUrl =
+        process.env.NODE_ENV === 'development'
+            ? 'http://localhost:5000'  // Local backend URL
+            : window.location.origin;  // Use the deployed backend URL
+
+    return io(backendUrl, options);
 };
