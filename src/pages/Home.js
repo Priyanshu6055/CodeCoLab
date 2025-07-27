@@ -78,7 +78,7 @@ const Home = () => {
             <footer>
                 <h4>
                     Built by &nbsp;
-                    <a href="https://personal-portfolio-x592.onrender.com/">Priyanshu Raj</a>
+                    <a href="https://priyanshu-raj-website.vercel.app/">Priyanshu Raj</a>
                 </h4>
             </footer>
         </div>
