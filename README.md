@@ -12,7 +12,6 @@ CodeCoLab is a powerful and intuitive real-time collaborative coding platform th
 - 🧠 **Awareness API Integration** — "User is typing" indicators and presence info.
 - 🛠️ **Language-agnostic Editor** — Write code in any language using Monaco Editor.
 - 📡 **WebSocket Server** — Powered by `y-websocket` and `Socket.IO` for efficient bi-directional sync.
-- 🌐 **Frontend + Backend Architecture** — Cleanly separated for scalability.
 
 ---
 
