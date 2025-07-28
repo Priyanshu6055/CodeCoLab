@@ -66,7 +66,7 @@ npm run server:dev
 
 
 #### 🔹 Yjs WebSocket Server
-Repo Link - 
+Clone it first(Repo Link) - https://github.com/Priyanshu6055/yjs-websocket-server.git 
 
 ```bash
 npm install
