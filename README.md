@@ -19,10 +19,10 @@ CodeCoLab is a powerful and intuitive real-time collaborative coding platform th
 
 | Layer      | Technology                         |
 |------------|-------------------------------------|
-| Frontend   | React, Tailwind CSS, Monaco Editor  |
+| Frontend   | React, Monaco Editor  |
 | Backend    | Node.js, Express.js                 |
 | Real-Time  | WebSocket, Socket.IO, Yjs, y-websocket |
-| Hosting    | (Optional) Vercel / Heroku / Render |
+| Hosting    | Render |
 | Versioning | Git + GitHub                        |
 
 ---
