@@ -30,7 +30,11 @@ const CollaborativeEditor = ({ roomId, username }) => {
     const ydoc = new Y.Doc();
     ydocRef.current = ydoc;
 
-    const provider = new WebsocketProvider('https://yjs-websocket-server-wuwh.onrender.com', roomId, ydoc);
+    const provider = new WebsocketProvider(
+      'https://yjs-websocket-server-wuwh.onrender.com',
+      roomId,
+      ydoc
+    );
     providerRef.current = provider;
 
     const yText = ydoc.getText('monaco');
@@ -46,7 +50,7 @@ const CollaborativeEditor = ({ roomId, username }) => {
       setStatus(event.status);
     });
 
-    // Listen to awareness updates for typing indicator
+    // Awareness updates for typing indicator
     const awarenessUpdateHandler = () => {
       const states = Array.from(provider.awareness.getStates().values());
       const othersTyping = states
@@ -77,7 +81,6 @@ const CollaborativeEditor = ({ roomId, username }) => {
       providerRef.current.awareness
     );
 
-    // Typing awareness
     let typingTimeout;
     editor.onDidChangeModelContent(() => {
       const provider = providerRef.current;
@@ -105,7 +108,7 @@ const CollaborativeEditor = ({ roomId, username }) => {
         Server Connection Status: {status.toUpperCase()} | User: {username}
       </div>
 
-      <TypingIndicator typingUsers={typingUsers} />
+      <TypingIndicator typingUsers={typingUsers} currentUser={username} />
 
       <Editor
         height="calc(100vh - 70px)"
