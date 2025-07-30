@@ -20,7 +20,6 @@ const CollaborativeEditor = ({ roomId, username }) => {
   const yTextRef = useRef(null);
   const editorRef = useRef(null);
   const monacoRef = useRef(null);
-
   const [typingUsers, setTypingUsers] = useState([]);
   const [status, setStatus] = useState('disconnected');
 
@@ -31,7 +30,7 @@ const CollaborativeEditor = ({ roomId, username }) => {
     ydocRef.current = ydoc;
 
     const provider = new WebsocketProvider(
-      'https://yjs-websocket-server-wuwh.onrender.com',
+      'wss://yjs-websocket-server-wuwh.onrender.com',
       roomId,
       ydoc
     );
@@ -46,11 +45,9 @@ const CollaborativeEditor = ({ roomId, username }) => {
     });
 
     provider.on('status', (event) => {
-      console.log(`🔗 Yjs connection status: ${event.status}`);
       setStatus(event.status);
     });
 
-    // Awareness updates for typing indicator
     const awarenessUpdateHandler = () => {
       const states = Array.from(provider.awareness.getStates().values());
       const othersTyping = states
@@ -70,7 +67,6 @@ const CollaborativeEditor = ({ roomId, username }) => {
 
   const handleEditorDidMount = (editor, monaco) => {
     if (!editor || !monaco) return;
-
     editorRef.current = editor;
     monacoRef.current = monaco;
 
@@ -87,7 +83,6 @@ const CollaborativeEditor = ({ roomId, username }) => {
       if (!provider) return;
 
       provider.awareness.setLocalStateField('typing', true);
-
       clearTimeout(typingTimeout);
       typingTimeout = setTimeout(() => {
         provider.awareness.setLocalStateField('typing', false);
@@ -99,13 +94,13 @@ const CollaborativeEditor = ({ roomId, username }) => {
     <div style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
       <div
         style={{
-          backgroundColor: status === 'connected' ? '#11491eff' : '#55141bff',
+          backgroundColor: status === 'connected' ? '#11491e' : '#7e1515',
           color: '#fff',
           padding: '6px 12px',
           fontWeight: 'bold',
         }}
       >
-        Server Connection Status: {status.toUpperCase()} | User: {username}
+        Server Status: {status.toUpperCase()} | User: {username}
       </div>
 
       <TypingIndicator typingUsers={typingUsers} currentUser={username} />
