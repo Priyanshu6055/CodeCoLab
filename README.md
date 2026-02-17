@@ -19,6 +19,12 @@ CodeCoLab is a powerful real-time collaborative coding platform that allows mult
 - **Selection highlighting** — see what other users have selected
 - **Throttled updates** — 50ms throttle for smooth, flicker-free rendering
 
+### 🎙️ Voice Chat
+- **Real-time audio** — voice communication with other users in the room
+- **Mute/Unmute** — toggle microphone status easily
+- **Visual indicators** — see who is speaking with glowing avatars
+- **Room-based** — voice channels are scoped to the current room
+
 ### 🔐 JWT Authentication
 - **Register / Login** — secure auth with bcrypt password hashing
 - **Protected routes** — editor and home pages require login
@@ -51,6 +57,7 @@ CodeCoLab is a powerful real-time collaborative coding platform that allows mult
 | Auth | JWT + bcryptjs |
 | Real-Time Sync | Yjs, y-websocket, y-monaco |
 | Signaling | Socket.IO (room join/leave events) |
+| Voice Chat | WebRTC (Peer-to-Peer Audio) |
 | Hosting | Render (or any Node.js host) |
 
 ---
@@ -103,6 +110,9 @@ CodeCoLab/
 │       ├── useRemoteHighlights.js     # Remote selection highlighting hook
 │       ├── TypingIndicator.js         # "User is typing" display
 │       ├── Client.js                  # User avatar in sidebar
+│       ├── VoiceChat/
+│       │   ├── VoicePanel.js          # Voice chat UI component
+│       │   └── useVoiceChat.js        # WebRTC logic hook
 │       └── PrivateRoute.js            # Auth guard component
 │
 └── public/
