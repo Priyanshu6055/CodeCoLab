@@ -1,12 +1,17 @@
 import './App.css';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
+import { AuthProvider } from './context/AuthContext';
+import PrivateRoute from './components/PrivateRoute';
 import Home from './pages/Home';
 import EditorPage from './pages/EditorPage';
+import Login from './pages/Login';
+import Signup from './pages/Signup';
+import Projects from './pages/Projects';
 
 function App() {
     return (
-        <>
+        <AuthProvider>
             <div>
                 <Toaster
                     position="top-right"
@@ -21,14 +26,35 @@ function App() {
             </div>
             <BrowserRouter>
                 <Routes>
-                    <Route path="/" element={<Home />}></Route>
+                    <Route path="/login" element={<Login />}></Route>
+                    <Route path="/signup" element={<Signup />}></Route>
+                    <Route
+                        path="/projects"
+                        element={
+                            <PrivateRoute>
+                                <Projects />
+                            </PrivateRoute>
+                        }
+                    ></Route>
+                    <Route
+                        path="/"
+                        element={
+                            <PrivateRoute>
+                                <Home />
+                            </PrivateRoute>
+                        }
+                    ></Route>
                     <Route
                         path="/editor/:roomId"
-                        element={<EditorPage />}
+                        element={
+                            <PrivateRoute>
+                                <EditorPage />
+                            </PrivateRoute>
+                        }
                     ></Route>
                 </Routes>
             </BrowserRouter>
-        </>
+        </AuthProvider>
     );
 }
 

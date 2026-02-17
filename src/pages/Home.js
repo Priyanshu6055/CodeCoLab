@@ -1,13 +1,18 @@
 import React, { useState } from 'react';
 import { v4 as uuidV4 } from 'uuid';
 import toast from 'react-hot-toast';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 
 const Home = () => {
     const navigate = useNavigate();
+    const { user, logout } = useAuth();
 
     const [roomId, setRoomId] = useState('');
-    const [username, setUsername] = useState('');
+
+    // Username comes from the logged-in user
+    const username = user?.username || '';
+
     const createNewRoom = (e) => {
         e.preventDefault();
         const id = uuidV4();
@@ -16,12 +21,12 @@ const Home = () => {
     };
 
     const joinRoom = () => {
-        if (!roomId || !username) {
-            toast.error('ROOM ID & username is required');
+        if (!roomId) {
+            toast.error('ROOM ID is required');
             return;
         }
 
-        // Redirect
+        // Redirect with username from auth
         navigate(`/editor/${roomId}`, {
             state: {
                 username,
@@ -34,14 +39,39 @@ const Home = () => {
             joinRoom();
         }
     };
+
+    const handleLogout = () => {
+        logout();
+        toast.success('Logged out successfully');
+        navigate('/login');
+    };
+
     return (
         <div className="homePageWrapper">
             <div className="formWrapper">
-                <img
-                    className="homePageLogo"
-                    src="/code-sync.png"
-                    alt="code-sync-logo"
-                />
+                <div className="homeHeader">
+                    <img
+                        className="homePageLogo"
+                        src="/code-sync.png"
+                        alt="code-sync-logo"
+                    />
+                    <div className="userInfo">
+                        <span className="welcomeText">
+                            Welcome, <strong>{username}</strong>
+                        </span>
+                        <div className="userActions">
+                            <Link to="/projects" className="btn projectsNavBtn">
+                                My Projects
+                            </Link>
+                            <button
+                                className="btn logoutBtn"
+                                onClick={handleLogout}
+                            >
+                                Logout
+                            </button>
+                        </div>
+                    </div>
+                </div>
                 <h4 className="mainLabel">Paste invitation ROOM ID</h4>
                 <div className="inputGroup">
                     <input
@@ -50,14 +80,6 @@ const Home = () => {
                         placeholder="ROOM ID"
                         onChange={(e) => setRoomId(e.target.value)}
                         value={roomId}
-                        onKeyUp={handleInputEnter}
-                    />
-                    <input
-                        type="text"
-                        className="inputBox"
-                        placeholder="USERNAME"
-                        onChange={(e) => setUsername(e.target.value)}
-                        value={username}
                         onKeyUp={handleInputEnter}
                     />
                     <button className="btn joinBtn" onClick={joinRoom}>

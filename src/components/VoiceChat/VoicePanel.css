@@ -1,0 +1,174 @@
+/* VoicePanel.css */
+.voicePanel {
+    background: #252526;
+    border-top: 1px solid #333;
+    padding: 10px;
+    color: #eee;
+    font-size: 13px;
+    transition: all 0.3s ease;
+}
+
+.voicePanel.collapsed {
+    padding: 8px;
+    display: flex;
+    justify-content: center;
+    background: transparent;
+    border-top: none;
+}
+
+.joinVoiceBtn {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    background: #2ea043;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 4px;
+    color: white;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background 0.2s;
+}
+
+.joinVoiceBtn:hover {
+    background: #3fb950;
+}
+
+.voiceControls {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.voiceStatus {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.voiceLabel {
+    cursor: pointer;
+    user-select: none;
+    font-weight: 600;
+    color: #ccc;
+}
+
+.voiceLabel:hover {
+    color: #fff;
+}
+
+.liveDot {
+    width: 8px;
+    height: 8px;
+    background: #2ea043;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.liveDot.pulse-animation {
+    box-shadow: 0 0 0 0 rgba(46, 160, 67, 0.7);
+    animation: pulse-green 2s infinite;
+}
+
+@keyframes pulse-green {
+    0% {
+        transform: scale(0.95);
+        box-shadow: 0 0 0 0 rgba(46, 160, 67, 0.7);
+    }
+
+    70% {
+        transform: scale(1);
+        box-shadow: 0 0 0 6px rgba(46, 160, 67, 0);
+    }
+
+    100% {
+        transform: scale(0.95);
+        box-shadow: 0 0 0 0 rgba(46, 160, 67, 0);
+    }
+}
+
+.voiceActions {
+    display: flex;
+    gap: 8px;
+}
+
+.btn-icon {
+    background: #3c3c3c;
+    border: none;
+    color: #fff;
+    width: 28px;
+    height: 28px;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.btn-icon:hover {
+    background: #505050;
+}
+
+.btn-icon.muted {
+    background: #d73a49;
+}
+
+.btn-icon.leave {
+    background: #333;
+    color: #d73a49;
+}
+
+.btn-icon.leave:hover {
+    background: #d73a49;
+    color: white;
+}
+
+/* User List */
+.voiceUserList {
+    margin-top: 10px;
+    background: #1e1e1e;
+    border-radius: 4px;
+    padding: 4px;
+    max-height: 150px;
+    overflow-y: auto;
+}
+
+.voiceUser {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px;
+    border-radius: 4px;
+}
+
+.voiceUser:hover {
+    background: #2a2d3e;
+}
+
+.userAvatar {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    color: white;
+    font-size: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+}
+
+.userName {
+    font-size: 12px;
+    color: #ccc;
+}
+
+.noUsers {
+    padding: 8px;
+    text-align: center;
+    color: #666;
+    font-style: italic;
+    font-size: 12px;
+}
