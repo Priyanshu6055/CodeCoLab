@@ -1,5 +1,5 @@
 {
-  "name": "CodeCoLab",
+  "name": "codecolab",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -7,7 +7,7 @@
     "dev": "concurrently \"npm run server\" \"npm run client\"",
     "server": "npm run dev --prefix server",
     "client": "npm start --prefix client",
-    "build": "npm run build --prefix client",
+    "build": "npm run install:all && npm run build --prefix client",
     "start": "node server/index.js",
     "heroku-postbuild": "npm run install:all && npm run build"
   },
