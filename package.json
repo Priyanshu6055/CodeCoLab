@@ -2,66 +2,16 @@
   "name": "CodeCoLab",
   "version": "0.1.0",
   "private": true,
-  "dependencies": {
-    "@codemirror/basic-setup": "^0.20.0",
-    "@codemirror/lang-javascript": "^6.2.4",
-    "@monaco-editor/react": "^4.7.0",
-    "@testing-library/jest-dom": "^5.16.2",
-    "@testing-library/react": "^12.1.3",
-    "@testing-library/user-event": "^13.5.0",
-    "bcryptjs": "^3.0.3",
-    "codemirror": "^5.65.19",
-    "cors": "^2.8.6",
-    "dotenv": "^17.3.1",
-    "express": "^4.17.1",
-    "jsonwebtoken": "^9.0.3",
-    "mongoose": "^9.2.1",
-    "react": "^17.0.2",
-    "react-avatar": "^4.0.0",
-    "react-dom": "^17.0.2",
-    "react-hot-toast": "^2.4.1",
-    "react-router-dom": "^6.28.0",
-    "react-scripts": "5.0.0",
-    "socket.io": "^4.4.1",
-    "socket.io-client": "^4.4.1",
-    "toast": "^0.5.4",
-    "uuid": "^8.3.2",
-    "web-vitals": "^2.1.4",
-    "y-codemirror.next": "^0.3.5",
-    "y-monaco": "^0.1.6",
-    "y-websocket": "^3.0.0",
-    "yjs": "^13.6.27"
-  },
   "scripts": {
-    "start:front": "react-scripts start",
-    "start": "node server.js",
-    "build": "react-scripts build",
-    "heroku-postbuild": "npm run build",
-    "server:dev": "nodemon server.js",
-    "server:prod": "node server.js",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
-  },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
+    "install:all": "npm install --prefix server && npm install --prefix client",
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "server": "npm run dev --prefix server",
+    "client": "npm start --prefix client",
+    "build": "npm run build --prefix client",
+    "start": "node server/index.js",
+    "heroku-postbuild": "npm run install:all && npm run build"
   },
   "devDependencies": {
-    "concurrently": "^9.1.2",
-    "nodemon": "^2.0.22"
+    "concurrently": "^9.1.2"
   }
 }

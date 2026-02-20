@@ -1,0 +1,22 @@
+{
+    "name": "codecolab-server",
+    "version": "1.0.0",
+    "description": "CodeCoLab backend — Express + Socket.IO + MongoDB",
+    "main": "index.js",
+    "scripts": {
+        "start": "node index.js",
+        "dev": "nodemon index.js"
+    },
+    "dependencies": {
+        "bcryptjs": "^3.0.3",
+        "cors": "^2.8.6",
+        "dotenv": "^17.3.1",
+        "express": "^4.17.1",
+        "jsonwebtoken": "^9.0.3",
+        "mongoose": "^9.2.1",
+        "socket.io": "^4.4.1"
+    },
+    "devDependencies": {
+        "nodemon": "^2.0.22"
+    }
+}

@@ -66,57 +66,71 @@ CodeCoLab is a powerful real-time collaborative coding platform that allows mult
 
 ```
 CodeCoLab/
-├── server.js                          # Express + Socket.IO + API routes
-├── .env                               # Environment variables
-├── package.json
+├── package.json                        # Root orchestrator (scripts only)
+├── .env                                # Server env vars
+├── .gitignore
+├── README.md
 │
-├── server/                            # Backend modules
+├── server/                             # Express backend
+│   ├── package.json
+│   ├── index.js                        # Entry point (Express + Socket.IO)
 │   ├── config/
-│   │   └── db.js                      # MongoDB connection
-│   ├── models/
-│   │   ├── User.js                    # User schema (email, username, password)
-│   │   └── Project.js                 # Project schema (title, language, code, roomId)
+│   │   └── db.js                       # MongoDB connection
+│   ├── constants/
+│   │   └── Actions.js                  # Socket event constants
 │   ├── controllers/
-│   │   ├── authController.js          # Register, Login, GetMe
-│   │   └── projectController.js       # CRUD for projects
+│   │   ├── authController.js
+│   │   └── projectController.js
 │   ├── middleware/
-│   │   └── auth.js                    # JWT verification middleware
-│   └── routes/
-│       ├── auth.js                    # /api/auth/*
-│       └── projects.js                # /api/projects/*
+│   │   └── auth.js                     # JWT verification
+│   ├── models/
+│   │   ├── User.js
+│   │   └── Project.js
+│   ├── routes/
+│   │   ├── auth.js
+│   │   └── projects.js
+│   ├── socket/
+│   │   └── socketHandler.js            # All Socket.IO + voice logic
+│   └── utils/
 │
-├── src/                               # React frontend
-│   ├── App.js                         # Routes + AuthProvider
-│   ├── App.css                        # All styles
-│   ├── socket.js                      # Socket.IO client init
-│   ├── Actions.js                     # Socket event constants
-│   │
-│   ├── context/
-│   │   └── AuthContext.js             # Auth state management
-│   ├── api/
-│   │   └── projects.js                # Projects API helper
-│   │
-│   ├── pages/
-│   │   ├── Home.js                    # Room create/join
-│   │   ├── EditorPage.js              # Editor + sidebar + save/load + console
-│   │   ├── Projects.js                # My Projects grid page
-│   │   ├── Login.js                   # Login form
-│   │   └── Signup.js                  # Registration form
-│   │
-│   └── components/
-│       ├── CollaborativeEditor.js     # Monaco + Yjs binding + cursor broadcast
-│       ├── CodeRunner.js              # Sandboxed JS execution panel
-│       ├── useRemoteCursors.js        # Remote cursor rendering hook
-│       ├── useRemoteHighlights.js     # Remote selection highlighting hook
-│       ├── TypingIndicator.js         # "User is typing" display
-│       ├── Client.js                  # User avatar in sidebar
-│       ├── VoiceChat/
-│       │   ├── VoicePanel.js          # Voice chat UI component
-│       │   └── useVoiceChat.js        # WebRTC logic hook
-│       └── PrivateRoute.js            # Auth guard component
-│
-└── public/
-    └── code-sync.png                  # Logo
+├── client/                             # React frontend (CRA)
+│   ├── package.json
+│   ├── public/
+│   │   └── index.html
+│   └── src/
+│       ├── App.js                      # Routes + AuthProvider
+│       ├── App.css                     # All styles
+│       ├── constants/
+│       │   └── Actions.js              # Socket event constants (ESM)
+│       ├── socket/
+│       │   └── socket.js               # Socket.IO client init
+│       ├── context/
+│       │   └── AuthContext.js
+│       ├── services/
+│       │   └── projects.js             # Projects API helper
+│       ├── hooks/
+│       │   └── useLiveAwareness.js
+│       ├── pages/
+│       │   ├── Home.js
+│       │   ├── EditorPage.js
+│       │   ├── Projects.js
+│       │   ├── Login.js
+│       │   └── Signup.js
+│       ├── components/
+│       │   ├── CollaborativeEditor.js
+│       │   ├── Client.js
+│       │   ├── PrivateRoute.js
+│       │   ├── ActiveUsers.js
+│       │   ├── TypingIndicator.js
+│       │   ├── LiveActivityIndicator.js
+│       │   ├── CodeRunner/
+│       │   │   ├── RunnerPanel.js
+│       │   │   └── useRunner.js
+│       │   └── VoiceChat/
+│       │       ├── VoicePanel.js
+│       │       └── useVoiceChat.js
+│       └── utils/
+│           └── getUserColor.js
 ```
 
 ---
@@ -139,7 +153,8 @@ cd CodeCoLab
 ### 2. Install Dependencies
 
 ```bash
-npm install
+npm install          # installs concurrently (root)
+npm run install:all  # installs server + client deps
 ```
 
 ### 3. Create `.env` File
@@ -172,33 +187,26 @@ npm start
 
 ## 🚀 Start Commands
 
-Open **two terminals** in the `CodeCoLab` directory:
+From the project root:
 
-### Terminal 1 — Backend (Express + Socket.IO + MongoDB)
-
-```bash
-npm run server:dev
-```
-
-> Starts the backend on `http://localhost:5000` with hot-reload via nodemon.
-
-### Terminal 2 — Frontend (React)
+### Development (concurrent server + client)
 
 ```bash
-npm run start:front
+npm run dev
 ```
 
-> Starts the React dev server on `http://localhost:3000` with HMR.
+> Starts Express on `http://localhost:5000` and React on `http://localhost:3000` simultaneously.
 
 ### All Available Scripts
 
 | Command | Description |
 |---------|-------------|
-| `npm run start:front` | Start React dev server (port 3000) |
-| `npm run server:dev` | Start backend with nodemon (port 5000) |
-| `npm start` | Start backend without nodemon (production) |
+| `npm run dev` | Start server + client concurrently |
+| `npm run server` | Start backend only (nodemon) |
+| `npm run client` | Start React dev server only |
 | `npm run build` | Build React for production |
-| `npm test` | Run React tests |
+| `npm start` | Start production server (serves client build) |
+| `npm run install:all` | Install server + client deps |
 
 ---
 
@@ -283,7 +291,7 @@ npm run build
 
 1. Push code to GitHub
 2. Create a new **Web Service** on [Render](https://render.com)
-3. Set **Build Command:** `npm install && npm run build`
+3. Set **Build Command:** `npm run install:all && npm run build`
 4. Set **Start Command:** `npm start`
 5. Add environment variables: `MONGO_URI`, `JWT_SECRET`, `PORT`
 6. Deploy!
