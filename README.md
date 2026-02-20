@@ -1,4 +1,4 @@
-# 🧠 CodeCoLab — Real-time Collaborative Code Editor
+# 🧠 CodeCoLab v2.0.0 — Real-time Collaborative Code Editor
 
 CodeCoLab is a powerful real-time collaborative coding platform that allows multiple users to edit code together, in sync. Built for interviews, teaching, remote pair programming, and team collaboration.
 
