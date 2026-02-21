@@ -169,19 +169,14 @@ JWT_SECRET=your_super_secret_key_here
 
 > **Note:** For MongoDB Atlas, replace `MONGO_URI` with your Atlas connection string.
 
-### 4. Start the Yjs WebSocket Server
+### 4. Unified Server Architecture (Integrated Yjs)
 
-The Yjs sync server runs separately. Clone and start it:
+The Yjs WebSocket server is now unified with the main backend. No separate server setup is required. The server automatically handles:
+- **Express APIs** on port 5000
+- **Socket.IO** (Voice Chat/Signaling)
+- **Yjs WebSocket** (Code Collaboration) at `/yjs`
 
-```bash
-git clone https://github.com/Priyanshu6055/yjs-websocket-server.git
-cd yjs-websocket-server
-npm install
-npm start
-```
-
-> This runs the Yjs WebSocket server that handles real-time document sync.  
-> The production version is deployed at `wss://yjs-websocket-server-wuwh.onrender.com`.
+> **Note:** In production, ensure you use an uptime monitor (like UptimeRobot) to ping the `/health` endpoint to prevent Render's free tier from sleeping.
 
 ---
 
@@ -311,7 +306,7 @@ npm run build
 | Problem | Solution |
 |---------|----------|
 | `MongoDB connection failed` | Make sure MongoDB is running locally or your Atlas URI is correct |
-| `Cannot connect to Yjs server` | Start the Yjs WebSocket server separately or check the deployed URL |
+| `Cannot connect to Yjs server` | Check if the backend is running and the /health endpoint is reachable |
 | `401 Unauthorized` | Token expired — log out and log back in |
 | `CORS error on API call` | The frontend proxy is configured for `localhost:5000` in development |
 | `Code runner shows no output` | Make sure you have `console.log()` statements in your code |

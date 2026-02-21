@@ -39,11 +39,18 @@ const CollaborativeEditor = ({ roomId, username, onCodeChange, onActiveUsers }) 
     const ydoc = new Y.Doc();
     ydocRef.current = ydoc;
 
-    const provider = new WebsocketProvider(
-      'wss://yjs-websocket-server-wuwh.onrender.com',
-      roomId,
-      ydoc
-    );
+    // Use current origin to derive WebSocket URL (works in dev & prod)
+    const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+    let host = window.location.host;
+
+    // Handle development mode (client on 3000, server on 5000)
+    if (host.includes('localhost:3000')) {
+      host = 'localhost:5000';
+    }
+
+    const wsUrl = `${protocol}//${host}/yjs`;
+
+    const provider = new WebsocketProvider(wsUrl, roomId, ydoc);
     providerRef.current = provider;
 
     const yText = ydoc.getText('monaco');
@@ -65,29 +72,6 @@ const CollaborativeEditor = ({ roomId, username, onCodeChange, onActiveUsers }) 
       ydoc.destroy();
     };
   }, [roomId, username, userColor]);
-
-  // ── Wake up Render service on mount ──
-  useEffect(() => {
-    // Ping the HTTP endpoint to wake up the Render free instance if it's sleeping
-    fetch('https://yjs-websocket-server-wuwh.onrender.com', { mode: 'no-cors' })
-      .then(() => console.log('[Yjs] Wake-up ping sent to Render server'))
-      .catch((err) => console.warn('[Yjs] Wake-up ping failed:', err));
-  }, []);
-
-  // ── Heartbeat to keep connection alive & prevent Render spin-down ──
-  useEffect(() => {
-    if (status !== 'connected' || !providerRef.current) return;
-
-    const interval = setInterval(() => {
-      if (providerRef.current) {
-        // Send a small update to the awareness state to keep the websocket active
-        providerRef.current.awareness.setLocalStateField('lastActive', Date.now());
-        console.log('[Yjs] Heartbeat sent');
-      }
-    }, 30000); // 30 seconds
-
-    return () => clearInterval(interval);
-  }, [status]);
 
   // ── Listen for project loaded events to set code ──
   useEffect(() => {
