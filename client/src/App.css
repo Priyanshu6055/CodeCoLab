@@ -206,12 +206,12 @@ footer a:hover {
 }
 
 
-.btnGroup1{
+.btnGroup1 {
     display: flex;
     gap: 12px;
 }
 
-.btnGroup2{
+.btnGroup2 {
     display: flex;
     gap: 12px;
 }
@@ -959,6 +959,11 @@ footer a:hover {
     border-color: rgba(218, 54, 51, 0.3);
 }
 
+.statusIndicator.connecting {
+    background: rgba(255, 165, 0, 0.15);
+    border-color: rgba(255, 165, 0, 0.3);
+}
+
 .statusDot {
     width: 8px;
     height: 8px;
@@ -975,6 +980,12 @@ footer a:hover {
 .statusIndicator.disconnected .statusDot {
     background: #f85149;
     box-shadow: 0 0 6px rgba(248, 81, 73, 0.6);
+}
+
+.statusIndicator.connecting .statusDot {
+    background: #ffa500;
+    box-shadow: 0 0 6px rgba(255, 165, 0, 0.6);
+    animation: statusPulse 2s ease-in-out infinite;
 }
 
 @keyframes statusPulse {
@@ -1004,6 +1015,10 @@ footer a:hover {
 
 .statusIndicator.disconnected .statusLabel {
     color: #f85149;
+}
+
+.statusIndicator.connecting .statusLabel {
+    color: #ffa500;
 }
 
 .statusUser {

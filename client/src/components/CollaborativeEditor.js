@@ -55,6 +55,7 @@ const CollaborativeEditor = ({ roomId, username, onCodeChange, onActiveUsers }) 
     });
 
     provider.on('status', (event) => {
+      console.log(`[Yjs] Connection status: ${event.status}`);
       setStatus(event.status);
     });
 
@@ -64,6 +65,29 @@ const CollaborativeEditor = ({ roomId, username, onCodeChange, onActiveUsers }) 
       ydoc.destroy();
     };
   }, [roomId, username, userColor]);
+
+  // ── Wake up Render service on mount ──
+  useEffect(() => {
+    // Ping the HTTP endpoint to wake up the Render free instance if it's sleeping
+    fetch('https://yjs-websocket-server-wuwh.onrender.com', { mode: 'no-cors' })
+      .then(() => console.log('[Yjs] Wake-up ping sent to Render server'))
+      .catch((err) => console.warn('[Yjs] Wake-up ping failed:', err));
+  }, []);
+
+  // ── Heartbeat to keep connection alive & prevent Render spin-down ──
+  useEffect(() => {
+    if (status !== 'connected' || !providerRef.current) return;
+
+    const interval = setInterval(() => {
+      if (providerRef.current) {
+        // Send a small update to the awareness state to keep the websocket active
+        providerRef.current.awareness.setLocalStateField('lastActive', Date.now());
+        console.log('[Yjs] Heartbeat sent');
+      }
+    }, 30000); // 30 seconds
+
+    return () => clearInterval(interval);
+  }, [status]);
 
   // ── Listen for project loaded events to set code ──
   useEffect(() => {
@@ -156,13 +180,22 @@ const CollaborativeEditor = ({ roomId, username, onCodeChange, onActiveUsers }) 
     });
   };
 
+  const getStatusLabel = () => {
+    switch (status) {
+      case 'connected': return 'Live';
+      case 'connecting': return 'Connecting...';
+      case 'disconnected': return 'Offline';
+      default: return status.charAt(0).toUpperCase() + status.slice(1);
+    }
+  };
+
   return (
     <div style={{ height: '100%', display: 'flex', flexDirection: 'column', position: 'relative', flex: 1, minHeight: 0 }}>
       <div className="editorStatusBar">
-        <div className={`statusIndicator ${status === 'connected' ? 'connected' : 'disconnected'}`}>
+        <div className={`statusIndicator ${status}`}>
           <span className="statusDot" />
           <span className="statusLabel">
-            {status === 'connected' ? 'Live' : 'Offline'}
+            {getStatusLabel()}
           </span>
         </div>
         <span className="statusUser">{username}</span>
